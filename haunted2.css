@@ -1,0 +1,239 @@
+.haunted2-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.haunted2-header {
+  width: 100%;
+  display: flex;
+  max-width: var(--dl-size-size-maxwidth);
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-twounits);
+  justify-content: space-between;
+}
+.haunted2-navlink {
+  display: contents;
+}
+.haunted2-image {
+  height: 3rem;
+  text-decoration: none;
+}
+.haunted2-icon-group {
+  display: flex;
+}
+.haunted2-burger-menu {
+  display: none;
+}
+.haunted2-icon {
+  width: var(--dl-size-size-xsmall);
+  height: var(--dl-size-size-xsmall);
+  display: flex;
+}
+.haunted2-mobile-menu {
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100vh;
+  display: none;
+  padding: 32px;
+  z-index: 100;
+  position: absolute;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fff;
+}
+.haunted2-nav {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.haunted2-container1 {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--dl-space-space-threeunits);
+  justify-content: space-between;
+}
+.haunted2-image1 {
+  height: 2rem;
+}
+.haunted2-close-mobile-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.haunted2-icon02 {
+  width: var(--dl-size-size-xsmall);
+  height: var(--dl-size-size-xsmall);
+}
+.haunted2-icon04 {
+  width: var(--dl-size-size-xsmall);
+  height: var(--dl-size-size-xsmall);
+  margin-right: var(--dl-space-space-twounits);
+}
+.haunted2-icon06 {
+  width: var(--dl-size-size-xsmall);
+  height: var(--dl-size-size-xsmall);
+  margin-right: var(--dl-space-space-twounits);
+}
+.haunted2-icon08 {
+  width: var(--dl-size-size-xsmall);
+  height: var(--dl-size-size-xsmall);
+}
+.haunted2-image2 {
+  width: 100px;
+  object-fit: cover;
+}
+.haunted2-hero {
+  width: 100%;
+  display: flex;
+  padding: var(--dl-space-space-threeunits);
+  min-height: 80vh;
+  align-items: center;
+  flex-direction: column;
+  background-size: cover;
+  justify-content: flex-start;
+  background-image: url('https://images.unsplash.com/photo-1532012197267-da84d127e765?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDM0fHxib29rc3xlbnwwfHx8fDE2Nzg4MjE3NDY&ixlib=rb-4.0.3&w=1500');
+  background-position: center;
+}
+.haunted2-text {
+  color: var(--dl-color-gray-white);
+  align-self: flex-start;
+  margin-top: var(--dl-space-space-oneandhalfunits);
+  text-align: justify;
+  background-color: rgba(41, 40, 40, 0.67);
+}
+.haunted2-text03 {
+  text-decoration: underline;
+}
+.haunted2-navlink1 {
+  display: contents;
+}
+.haunted2-icon10 {
+  fill: #ffffff;
+  width: 24px;
+  height: 24px;
+  align-self: flex-start;
+  margin-top: var(--dl-space-space-unit);
+  text-decoration: none;
+}
+.haunted2-container2 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  margin-top: var(--dl-space-space-fiveunits);
+  align-items: flex-start;
+  justify-content: center;
+}
+.haunted2-navlink2 {
+  flex: 1;
+  width: var(--dl-size-size-xxlarge);
+  height: var(--dl-size-size-large);
+  font-size: 32px;
+  align-self: flex-start;
+  margin-top: var(--dl-space-space-halfunit);
+  text-align: center;
+  transition: 0.3s;
+  margin-left: var(--dl-space-space-unit);
+  padding-top: var(--dl-space-space-twounits);
+  margin-right: var(--dl-space-space-unit);
+  margin-bottom: var(--dl-space-space-halfunit);
+  padding-right: var(--dl-space-space-unit);
+  text-transform: lowercase;
+  text-decoration: none;
+}
+.haunted2-navlink2:hover {
+  background-color: var(--dl-color-gray-700);
+}
+.haunted2-text05 {
+  text-transform: capitalize;
+}
+.haunted2-navlink3 {
+  flex: 1;
+  width: var(--dl-size-size-xxlarge);
+  height: var(--dl-size-size-large);
+  font-size: 32px;
+  align-self: stretch;
+  margin-top: var(--dl-space-space-halfunit);
+  text-align: center;
+  transition: 0.3s;
+  margin-left: var(--dl-space-space-unit);
+  padding-top: var(--dl-space-space-twounits);
+  margin-right: var(--dl-space-space-unit);
+  border-radius: 10px;
+  margin-bottom: var(--dl-space-space-halfunit);
+  text-transform: capitalize;
+  text-decoration: none;
+}
+.haunted2-navlink3:hover {
+  background-color: var(--dl-color-gray-700);
+}
+.haunted2-text12 {
+  text-transform: lowercase;
+}
+.haunted2-footer {
+  width: 100%;
+  display: flex;
+  max-width: var(--dl-size-size-maxwidth);
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-twounits);
+  justify-content: space-between;
+}
+@media(max-width: 767px) {
+  .haunted2-header {
+    padding-left: var(--dl-space-space-twounits);
+    padding-right: var(--dl-space-space-twounits);
+  }
+  .haunted2-burger-menu {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+    justify-content: center;
+  }
+  .haunted2-hero {
+    padding-left: var(--dl-space-space-twounits);
+    padding-right: var(--dl-space-space-twounits);
+  }
+  .haunted2-footer {
+    padding-left: var(--dl-space-space-twounits);
+    padding-right: var(--dl-space-space-twounits);
+  }
+  .haunted2-text13 {
+    text-align: center;
+    margin-left: var(--dl-space-space-unit);
+    margin-right: var(--dl-space-space-unit);
+  }
+}
+@media(max-width: 479px) {
+  .haunted2-header {
+    padding: var(--dl-space-space-unit);
+  }
+  .haunted2-mobile-menu {
+    padding: 16px;
+  }
+  .haunted2-hero {
+    padding-top: var(--dl-space-space-twounits);
+    padding-left: var(--dl-space-space-unit);
+    padding-right: var(--dl-space-space-unit);
+    padding-bottom: var(--dl-space-space-twounits);
+  }
+  .haunted2-footer {
+    padding: var(--dl-space-space-unit);
+    flex-direction: column;
+  }
+  .haunted2-text13 {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: var(--dl-space-space-unit);
+  }
+}
