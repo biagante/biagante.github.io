@@ -1,82 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My CV</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav>
-        <div class="container">
-            <div class="left">
-                <h1>Your Name</h1>
-            </div>
-            <div class="right">
-                <ul class="nav-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Skills</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeff's Website</title>
+  </head>
+  <body>
 
-    <div class="container">
-        <div class="left">
-            <h1>Your Name</h1>
-            <p class="quote">Your Quote Here</p>
-            <ul class="social">
-                <li><a href="#">Twitter</a></li>
-                <li><a href="#">LinkedIn</a></li>
-                <li><a href="#">GitHub</a></li>
-                <!-- Add more social media links as needed -->
-            </ul>
-        </div>
-        <div class="right">
-            <canvas id="bg-canvas" width="400" height="400"></canvas>
-        </div>
-    </div>
-  
-    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-    <script type="module">
-        import * as THREE from 'https://threejs.org/build/three.module.js';
+    <canvas id="bg"></canvas>   
 
-        function init() {
-            // Set up Three.js scene
-            var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000); // Adjust aspect ratio to 1
-            var renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas') });
-            renderer.setSize(400, 400); // Set renderer size
+    <main>
 
-            // Add your picture as a texture
-            var textureLoader = new THREE.TextureLoader();
-            var texture = textureLoader.load('./assets/profile.jpg');
-            var material = new THREE.MeshBasicMaterial({ map: texture });
-            var planeGeometry = new THREE.PlaneGeometry(2, 2); // Adjust plane size
-            var plane = new THREE.Mesh(planeGeometry, material);
-            scene.add(plane);
+      <header>
+        <h1>Beatriz Agante</h1>
+        <p>🚀 Welcome to my website!</p>
+      </header>
 
-            // Create a rotating background
-            var bgGeometry = new THREE.PlaneGeometry(10, 10);
-            var bgMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 }); // Background color
-            var bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
-            scene.add(bgPlane);
 
-            camera.position.z = 5;
+      <blockquote>
+        <p>I like making stuff and putting it on the internet</p>
+      </blockquote>
 
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                bgPlane.rotation.x += 0.005;
-                bgPlane.rotation.y += 0.005;
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-        window.onload = init;
-    </script>
-</body>
+      <section>
+        <h2>📜 Manifesto</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+      </section>
+
+      <section class="light">
+        <h2>👩🏽‍🚀 Projects</h2>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+        <h2>🏆 Accomplishments</h2>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+      </section>
+
+      <blockquote>
+        <p>The best way out is always through <br>-Robert Frost</p>
+      </blockquote>
+
+      <section class="left">
+        <h2>🌮 Work History</h2>
+
+        <h3>McDonalds</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <h3>Burger King</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <h3>Taco Bell</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
+      </section>
+
+      <blockquote>
+        <p>Thanks for watching!</p>
+      </blockquote>
+
+
+    </main>
+    
+    <script type="module" src="/main.js"></script>
+
+  </body>
 </html>
