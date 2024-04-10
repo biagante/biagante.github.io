@@ -1,4 +1,6 @@
 import './styles.css';
+import "three": "https://threejs.org/build/three.module.js"
+
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
@@ -89,8 +91,8 @@ scene.add(moon);
 moon.position.z = 30;
 moon.position.setX(-10);
 
-jeff.position.z = -5;
-jeff.position.x = 2;
+me.position.z = -5;
+me.position.x = 2;
 
 // Scroll Animation
 
@@ -100,8 +102,8 @@ function moveCamera() {
   moon.rotation.y += 0.075;
   moon.rotation.z += 0.05;
 
-  jeff.rotation.y += 0.01;
-  jeff.rotation.z += 0.01;
+  me.rotation.y += 0.01;
+  me.rotation.z += 0.01;
 
   camera.position.z = t * -0.01;
   camera.position.x = t * -0.0002;
