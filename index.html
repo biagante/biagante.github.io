@@ -59,13 +59,19 @@
             var plane = new THREE.Mesh(planeGeometry, material);
             scene.add(plane);
 
+            // Create a rotating background
+            var bgGeometry = new THREE.PlaneGeometry(10, 10);
+            var bgMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 }); // Background color
+            var bgPlane = new THREE.Mesh(bgGeometry, bgMaterial);
+            scene.add(bgPlane);
+
             camera.position.z = 5;
 
             // Animation loop
             function animate() {
                 requestAnimationFrame(animate);
-                plane.rotation.x += 0.01;
-                plane.rotation.y += 0.01;
+                bgPlane.rotation.x += 0.005;
+                bgPlane.rotation.y += 0.005;
                 renderer.render(scene, camera);
             }
             animate();
