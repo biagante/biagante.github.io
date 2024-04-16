@@ -1,103 +1,111 @@
-*
-{
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.nav {
+    list-style: none;
     padding: 0;
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
+.nav li {
+    display: inline-block;
+    margin-right: 20px;
 }
 
-.middle{
-    position: absolute;
-    top: 70%;
-    left: 15%;
-    transform: translate(-50%, -50%);
+.nav a {
+    text-decoration: none;
+    color: #666;
+    transition: color 0.3s ease;
 }
 
-.mouse{
-    width: 50px;
-    height: 90px;
-    border: 4px solid #ffeded;
-    border-radius: 60px;
-}
-.mouse::before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 40%;
-    transform: translateX(-50%);
-    width: 8px;
-    height: 16px;
-    background: #ffeded;
-    border-radius: 50%;
-    opacity: 1;
-    animation: mouse 2s infinite;
-}
-@keyframes mouse {
-    from{
-        opacity: 1;
-        top: 30 px;
-    }
-    to {
-        opacity: 0;
-        top: 70px;
-    }
+.nav a:hover {
+    color: #333;
 }
 
-.text {
+.main {
     display: flex;
-    font-size: small;
-    font-family: 'Cabin', sans-serif;
-    color: #ffeded;
-    top: auto;
+    justify-content: space-between;
+    align-items: center; /* Align items vertically */
 }
 
-.text_section {
-    display: flex;
-    font-family: 'Cabin', sans-serif;
-    color: #ffeded;
-    text-transform: uppercase;
-    font-size: 4vmin;
-    padding-left: 10%;
-    padding-right: 10%;
-    margin-top: -20%;
-    will-change: transform;
+.bio {
+    flex: 1 1 50%;
+    margin-right: 20px; /* Add margin to separate bio from photo */
 }
 
-.section
-{
-    display: flex;
-    align-items: center;
-    height: 100vh;
-    position: relative;
-    font-family: 'Cabin', sans-serif;
-    color: #ffeded;
-    text-transform: uppercase;
-    font-size: 7vmin;
-    padding-left: 10%;
-    padding-right: 10%;
-    will-change: transform;
-    margin-inline: auto;
+.bio h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.section img {
-    width: 150px; 
-    height: auto;
-    margin-top: 10px; 
-    border: 2px solid #ffffff; 
-    border-radius: 10px; 
+.bio p {
+    color: #666;
 }
 
-section:nth-child(odd)
-{
-    justify-content: flex-end;
+.photo {
+    width: 150px; /* Set width to 150 pixels */
+    height: 150px; /* Set height to 150 pixels */
+    text-align: right;
+    overflow: hidden; /* Hide any overflowing content */
+    border: 1px solid #000;
+    border-radius: 10%; /* Create a circular border */
 }
 
-html
-{
-    background: #1e1a20;
+.photo img {
+    width: 100%; /* Ensure the image takes up 100% of the container's width */
+    height: 100%; /* Ensure the image takes up 100% of the container's height */
+    object-fit: cover; /* Crop the image while maintaining aspect ratio */
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    margin-top: -5px;
+}
+
+
+.contact {
+    text-align: left;
+}
+
+.contact a {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: #333;
+    border: 2px solid #333;
+    border-radius: 25px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.contact a:hover {
+    background-color: #666;
 }

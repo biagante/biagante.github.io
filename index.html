@@ -3,54 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three.js Scroll Based Animation</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Three.js Lamp Scene</title>
+    <div class="fade-Out"></div>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+        #lampButton {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #836953;
+            color: #f3e6d0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .fade-Out{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;  /* Adjust transition duration as needed */
+        }
+    </style>
 </head>
 <body>
-    <canvas class="webgl"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+    <button id="lampButton">Find out more</button>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-    <section class="section">
-        <h2>Welcome!</h2>
-        <div class = "middle">
-            <div class = "mouse"></div>
-            <p class="text">Scroll down to explore</p>
-        </div>
-    </section>
+        // group lamp
+        const lamp = new THREE.Group();
+
+        // Lamp base
+        const baseGeometry = new THREE.CylinderGeometry(0.2, 0.2, 1, 32);
+        const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x643820 });
+        const base = new THREE.Mesh(baseGeometry, baseMaterial);
+        //enable shadow
+        base.castShadow = true;
+        base.receiveShadow = true;
+        lamp.add(base);
+
+        //add contour to the lamp base
+        const baseContourGeometry = new THREE.EdgesGeometry(baseGeometry);
+        const baseContourMaterial = new THREE.LineBasicMaterial({ color: 0x28160d });
+        const baseContour = new THREE.LineSegments(baseContourGeometry, baseContourMaterial);
+        base.add(baseContour);
+
+        // Lamp shade
+        const shadeGeometry = new THREE.CylinderGeometry(0.4, 1, 0.9, 9);
+        const shadeMaterial = new THREE.MeshPhongMaterial({ color: 0xe09443 });
+        const shade = new THREE.Mesh(shadeGeometry, shadeMaterial);
+        shade.position.y = 0.95;
+        //enable shadow
+        shade.castShadow = true;
+        shade.receiveShadow = true;
+        lamp.add(shade);
+        
+        // add contour to the lamp shade
+        const shadeContourGeometry = new THREE.EdgesGeometry(shadeGeometry);
+        const shadeContourMaterial = new THREE.LineBasicMaterial({ color: 0x664229 });
+        const shadeContour = new THREE.LineSegments(shadeContourGeometry, shadeContourMaterial);
+        shade.add(shadeContour);
 
 
-    <section class="section">
-        <h2>My Portfolio</h2>
-        <div class="text_section">
-            <img src="assets/profile.jpg" alt="CV Picture">
-            <p>Welcome to my portfolio! I'm [Your Name], a [Your Profession] with expertise in [Your Skills]. Below are some of my projects and ways to get in touch with me.</p>
-        </div>
-    </section>
-    
-    <section class="section">
-        <h2>My Projects</h2>
-        <div class="text_section">
-            <h3>Project 1: [Project Name]</h3>
-            <p>Description: [Project Description]</p>
-            <p>Technologies Used: [Technologies]</p>
-            <p>My Role: [Your Role]</p>
-            <p>Outcome: [Project Outcome]</p>
-            <a href="[Project Link]">View Project</a>
-        </div>
-    </section>
-    
-    <section class="section">
-        <h2>Contact Me</h2>
-        <div class="text_section">
-            <p>Email: [Your Email]</p>
-            <p>Phone: [Your Phone Number]</p>
-            <p>Social Media: [Your Social Media Profiles]</p>
-            <p>Availability: [Your Availability]</p>
-        </div>
-    </section>
+        // Lamp cord (line)
+        const cordGeometry = new THREE.CylinderGeometry(0.02, 0.02, 0.5, 32);
+        const cordMaterial = new THREE.MeshPhongMaterial({ color: 0xa37b51 });
+        const cord = new THREE.Mesh(cordGeometry, cordMaterial);
+        cord.position.y = 0.25;
+        cord.position.x = 0.5;
+        //enable shadow
+        cord.castShadow = true;
+        cord.receiveShadow = true;
+        lamp.add(cord);
 
-    
-    <script src="./three.min.js"></script>
-    <script src="./gsap.min.js"></script>
-    <script src="./script.js"></script>
+        // add thin contour to the lamp cord
+        const cordContourGeometry = new THREE.EdgesGeometry(cordGeometry);
+        const cordContourMaterial = new THREE.LineBasicMaterial({ color: 0xe5d3b3 });
+        const cordContour = new THREE.LineSegments(cordContourGeometry, cordContourMaterial);
+        cord.add(cordContour);
+
+        //add lamp to the scene
+        scene.add(lamp);
+
+        //make lamp bigger
+        lamp.scale.set(2, 2, 2);     
+        
+        //tilt it forward
+        lamp.rotation.x = 0.25;
+
+        // ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(ambientLight);
+
+        // add soft light bulb
+        const light = new THREE.SpotLight(0xffffff, 100);
+        light.position.set(0, 2, 0);
+        scene.add(light);
+        //enable shadow
+        light.castShadow = true;
+
+
+        // Add circular plane for light effect
+        const circleGeometry = new THREE.CylinderGeometry(0.9, 2.5, 3, 64);
+        const circleMaterial = new THREE.MeshBasicMaterial({ color: 0xffd58b, side: THREE.DoubleSide, emissive: 0xffffee, emissiveIntensity: 1, opacity: 0.5, transparent: true});
+        const circle = new THREE.Mesh(circleGeometry, circleMaterial);
+        circle.position.y = 0.7;
+        circle.rotation.x = 0.25;
+        circle.receiveShadow = true;
+        circle.castShadow = true;
+        scene.add(circle);
+
+        // Camera position
+        camera.position.z = 5;
+
+        // Orbit controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        // Render loop
+        function animate() {
+
+            // turn on/off when clicked on the cord
+            document.addEventListener('click', () => {
+                circle.visible = !circle.visible;
+                document.getElementById('lampButton').addEventListener('click', () => {
+                    const fadeOut = document.querySelector('.fade-Out');
+                    fadeOut.style.opacity = 1;
+                    document.getElementById('lampButton').style.display = 'none';
+                    setTimeout(() => {
+                        fadeOut.style.opacity = 0;
+                    }, 500);
+                    window.location.href = 'home.html';
+                });
+            });
+
+            //move the cord softly up and down
+            cord.position.y = Math.sin(Date.now() * 0.002) * 0.05 + 0.25;
+
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>

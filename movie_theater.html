@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<title> Basic room </title>
+
+	<meta charset="utf-8">
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+	<style>
+		body {
+
+			background-color: #000000;
+			margin: 0px;
+			overflow: hidden;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+	<script type="importmap">
+		{
+    		"imports": {
+     			 "three": "https://threejs.org/build/three.module.js"
+    		}
+  		}
+	</script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // Once everything is loaded, run this function
+        function init() {
+            // Set up the scene, camera, and renderer
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Create walls, floor, and ceiling
+            var roomWidth = 10;
+            var roomHeight = 5;
+            var roomDepth = 10;
+
+            var wallWidth = 0.1;
+
+            var wallMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+            var floorMaterial = new THREE.MeshBasicMaterial({ color: 0xaaaaaa });
+            var ceilingMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc });
+
+            var wallGeometry = new THREE.BoxGeometry(wallWidth, roomHeight, 0.1);
+            var floorGeometry = new THREE.BoxGeometry(roomWidth, 0.1, roomDepth);
+            var ceilingGeometry = new THREE.BoxGeometry(roomWidth, 0.1, roomDepth);
+
+            var leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            leftWall.position.x = -roomWidth / 2;
+            scene.add(leftWall);
+
+            var rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            rightWall.position.x = roomWidth / 2;
+            scene.add(rightWall);
+
+            var backWall = new THREE.Mesh(wallGeometry, wallMaterial);
+            backWall.position.z = -roomDepth / 2;
+            backWall.rotation.y = Math.PI / 2;
+            scene.add(backWall);
+
+            var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.position.y = -roomHeight / 2;
+            scene.add(floor);
+
+            var ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
+            ceiling.position.y = roomHeight / 2;
+            scene.add(ceiling);
+
+            //add a poster to the wall 16:9 centered between the left wall and the back wall
+            var posterWidth = 4.8;
+            var posterHeight = 2.7;
+
+            var posterMaterial = new THREE.MeshBasicMaterial({ color: 0x95878e });
+            var posterGeometry = new THREE.BoxGeometry(posterWidth, posterHeight, 0.1);
+
+            var poster = new THREE.Mesh(posterGeometry, posterMaterial);
+            poster.position.x = -roomWidth/128;
+            poster.position.z = -roomDepth/8;
+            scene.add(poster);
+
+            //add red boxes to the room
+            // Define the number of rows and columns for the seating arrangement
+            var numRows = 4; // Number of rows
+            var numCols = 7; // Number of columns
+
+            // Define spacing between rows and columns
+            var rowSpacing = 1; // Spacing between rows
+            var colSpacing = 1; // Spacing between columns
+
+            // Create boxes
+            var boxMaterial = new THREE.MeshBasicMaterial({ color: 0x800020  }); // Red color
+            var boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5); 
+            var box = new THREE.Mesh(boxGeometry, boxMaterial);
+
+            //create an arch for the box to make a chair
+            var archMaterial = new THREE.MeshBasicMaterial({ color: 0x800020  }); // Red color
+            var archGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.5, 32);
+            var arch = new THREE.Mesh(archGeometry, archMaterial);
+
+            //group box to make a chair
+            var group = new THREE.Group();
+            group.add(box);
+            group.add(arch);
+
+            //loop to create and position the chairs
+            for (var i = 0; i < numRows; i++) {
+                for (var j = 0; j < numCols; j++) {
+                    var chair = group.clone();
+                    chair.position.x = -roomWidth / 4 + j * colSpacing - 0.5;
+                    chair.position.z = -roomDepth / 4 + i * rowSpacing;
+                    chair.position.y = -roomHeight / 2.4;
+                    scene.add(chair);
+                }
+            }
+
+
+
+
+
+            // Set camera position
+            camera.position.z = 5;
+
+            // Add lighting
+            var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(0, 1, 1);
+            scene.add(directionalLight);
+
+            // Render the scene
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        window.onload = init;
+
+	</script>
+
+</body>
+
+</html>

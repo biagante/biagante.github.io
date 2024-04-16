@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D Gallery with Three.js</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: flex;
+        }
+        .gallery-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;}
+
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <div id="gallery"></div> <!-- Container for the gallery -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Set up scene
+        var scene = new THREE.Scene();
+        var camera = new THREE.OrthographicCamera(-window.innerWidth / 2, window.innerWidth / 2, window.innerHeight / 2, -window.innerHeight / 2, 1, 1000);
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        var galleryContainer = document.getElementById('gallery');
+        galleryContainer.appendChild(renderer.domElement);
+
+        // Add ambient light
+        var ambientLight = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(ambientLight);
+
+        //add grain to the background
+        const grainCount = 500;
+        const grain = new Float32Array(grainCount * 3);
+        for (let i = 0; i < grainCount; i++) {
+            grain[i * 3] = Math.random() * 2 - 1;
+            grain[i * 3 + 1] = Math.random() * 2 - 1;
+            grain[i * 3 + 2] = Math.random() - 1;
+        }
+        const grainGeometry = new THREE.BufferGeometry();
+        grainGeometry.setAttribute('position', new THREE.BufferAttribute(grain, 3));
+        const grainMaterial = new THREE.PointsMaterial({
+            size: 1,
+            sizeAtenuation: true,
+            color: '#ffffff'
+        });
+        const grains = new THREE.Points(grainGeometry, grainMaterial);
+        scene.add(grains);
+
+
+        // Create gallery
+        var imageWidth = 200;
+        var imageHeight = 150;
+        var padding = 20;
+        var numRows = 20; // Number of rows
+        var numCols = 3; // Number of columns
+
+        var colors = [
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+            0xffff00, 0xff00ff, 0x00ffff,
+            0xff0000, 0x00ff00, 0x0000ff,
+        ]; // Placeholder colors
+
+        colors.forEach(function(color, index) {
+            var material = new THREE.MeshBasicMaterial({ color: color });
+            var geometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
+            var plane = new THREE.Mesh(geometry, material);
+            plane.originalScale = plane.scale.clone(); // Store original scale
+
+            // Positioning each plane in a grid layout
+            var row = Math.floor(index / numCols);
+            var col = index % numCols;
+            plane.position.x = col * (imageWidth + padding) - (imageWidth + padding);
+            plane.position.y = -row * (imageHeight + padding) + (imageHeight + padding);
+            
+            scene.add(plane);
+
+        });
+
+        // Position camera
+        camera.position.z = 5;
+
+        var raycaster = new THREE.Raycaster();
+        var mouseVector = new THREE.Vector2();
+        var maxPlaneDisplacement = 50; // Maximum displacement of the plane
+
+        function onMouseMove(event) {
+            // Calculate mouse position in normalized device coordinates
+            mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // Update raycaster with mouse position
+            raycaster.setFromCamera(mouseVector, camera);
+
+            // Check for intersections with the planes
+            var intersects = raycaster.intersectObjects(scene.children, true);
+
+            // If intersection found, zoom in the plane slightly
+            if (intersects.length > 0) {
+                // Reset scale of previously intersected planes
+                scene.children.forEach(function(child) {
+                    if (child.isMesh) {
+                        child.scale.set(1, 1, 1);
+                    }
+                });
+
+                // Scale the intersected plane
+                intersects[0].object.scale.set(1.1, 1.1, 1.1); // Adjust the scale factor as needed
+
+                photo = intersects[0].object;
+
+                photo.isClicked = false;
+                photo.addEventListener('click', function(event) {
+                    if (!photo.isClicked) {
+                        var aspectRatio = 16 / 9; // Desired aspect ratio
+                        var scaleFactor = Math.sqrt(1.1 / aspectRatio); // Scale factor for maintaining aspect ratio
+                        photo.scale.set(photo.scale.x * scaleFactor, photo.scale.y * scaleFactor, 1); // Enlarge the photo
+                        photo.isClicked = true;
+                    } else {
+                        photo.scale.copy(photo.originalScale); // Restore original scale
+                        photo.isClicked = false;
+                    }
+                });
+            }
+        }
+
+        var maxVerticalPosition = 50; // Adjust as needed
+        var minVerticalPosition = -200 * numRows; // Adjust as needed
+
+        function updateCameraPosition() {
+            // Calculate new camera position
+            var newPositionY = camera.position.y + mouseVector.y * 10; // Adjust speed as needed
+
+            // Apply maximum and minimum limits
+            if (newPositionY > maxVerticalPosition) {
+                camera.position.y = maxVerticalPosition;
+            } else if (newPositionY < minVerticalPosition) {
+                camera.position.y = minVerticalPosition;
+            } else {
+                camera.position.y = newPositionY;
+            }
+        }
+
+
+        // Listen for mouse move events
+        document.addEventListener('mousemove', onMouseMove, false);
+
+        // Render the scene
+        function animate() {
+            requestAnimationFrame(animate);
+
+            
+            // Update camera position
+            updateCameraPosition();
+
+            // Render the scene
+            renderer.render(scene, camera);
+        }
+        animate();
+
+    </script>
+</body>
+</html>
