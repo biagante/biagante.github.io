@@ -149,6 +149,7 @@
                     const fadeOut = document.querySelector('.fade-Out');
                     fadeOut.style.opacity = 1;
                     document.getElementById('lampButton').style.display = 'none';
+                    lamp.visible = false;
                     setTimeout(() => {
                         fadeOut.style.opacity = 0;
                     }, 500);
