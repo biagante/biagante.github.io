@@ -16,8 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;}
-
+            height: 100vh;
+        }
     </style>
 </head>
 <body>
@@ -40,23 +40,12 @@
         var ambientLight = new THREE.AmbientLight(0xffffff, 1);
         scene.add(ambientLight);
 
-        //add grain to the background
-        const grainCount = 500;
-        const grain = new Float32Array(grainCount * 3);
-        for (let i = 0; i < grainCount; i++) {
-            grain[i * 3] = Math.random() * 2 - 1;
-            grain[i * 3 + 1] = Math.random() * 2 - 1;
-            grain[i * 3 + 2] = Math.random() - 1;
-        }
-        const grainGeometry = new THREE.BufferGeometry();
-        grainGeometry.setAttribute('position', new THREE.BufferAttribute(grain, 3));
-        const grainMaterial = new THREE.PointsMaterial({
-            size: 1,
-            sizeAtenuation: true,
-            color: '#ffffff'
-        });
-        const grains = new THREE.Points(grainGeometry, grainMaterial);
-        scene.add(grains);
+        //create a background plane
+        var bgGeometry = new THREE.PlaneGeometry(window.innerWidth * 2, window.innerHeight * 100);
+        var bgMaterial = new THREE.MeshBasicMaterial({ color: 0x222222 });
+        var background = new THREE.Mesh(bgGeometry, bgMaterial);
+        background.position.z = -100;
+        scene.add(background);
 
 
         // Create gallery
@@ -90,20 +79,45 @@
         ]; // Placeholder colors
 
         colors.forEach(function(color, index) {
-            var material = new THREE.MeshBasicMaterial({ color: color });
-            var geometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
-            var plane = new THREE.Mesh(geometry, material);
-            plane.originalScale = plane.scale.clone(); // Store original scale
+        var material = new THREE.MeshBasicMaterial({ color: color });
+        var geometry = new THREE.PlaneGeometry(imageWidth, imageHeight);
+        var plane = new THREE.Mesh(geometry, material);
+        plane.originalScale = plane.scale.clone(); // Store original scale
 
-            // Positioning each plane in a grid layout
-            var row = Math.floor(index / numCols);
-            var col = index % numCols;
-            plane.position.x = col * (imageWidth + padding) - (imageWidth + padding);
-            plane.position.y = -row * (imageHeight + padding) + (imageHeight + padding);
-            
-            scene.add(plane);
+        // Positioning each plane in a grid layout
+        var row = Math.floor(index / numCols);
+        var col = index % numCols;
+        plane.position.x = col * (imageWidth + padding) - (imageWidth + padding);
+        plane.position.y = -row * (imageHeight + padding) + (imageHeight + padding);
+        
+        scene.add(plane);
 
-        });
+        // Load and apply texture to the first plane
+        if (index === 0) {
+            var textureLoader = new THREE.TextureLoader();
+            textureLoader.load('../assets/slide1.jpg', function(texture) {
+                // Scale the plane to match the aspect ratio of the loaded texture
+                var aspectRatio = texture.image.width / texture.image.height;
+                plane.scale.set(imageWidth * aspectRatio, imageHeight, 1);
+
+                var material = new THREE.MeshBasicMaterial({ map: texture });
+                plane.material = material;
+            });
+        }
+
+        if (index === 2) {
+            var textureLoader = new THREE.TextureLoader();
+            textureLoader.load('../assets/slide2.jpg', function(texture) {
+                // Scale the plane to match the aspect ratio of the loaded texture
+                var aspectRatio = texture.image.width / texture.image.height;
+                plane.scale.set(imageWidth * aspectRatio, imageHeight, 1);
+
+                var material = new THREE.MeshBasicMaterial({ map: texture });
+                plane.material = material;
+            });
+        }
+    });
+
 
         // Position camera
         camera.position.z = 5;
@@ -134,21 +148,6 @@
 
                 // Scale the intersected plane
                 intersects[0].object.scale.set(1.1, 1.1, 1.1); // Adjust the scale factor as needed
-
-                photo = intersects[0].object;
-
-                photo.isClicked = false;
-                photo.addEventListener('click', function(event) {
-                    if (!photo.isClicked) {
-                        var aspectRatio = 16 / 9; // Desired aspect ratio
-                        var scaleFactor = Math.sqrt(1.1 / aspectRatio); // Scale factor for maintaining aspect ratio
-                        photo.scale.set(photo.scale.x * scaleFactor, photo.scale.y * scaleFactor, 1); // Enlarge the photo
-                        photo.isClicked = true;
-                    } else {
-                        photo.scale.copy(photo.originalScale); // Restore original scale
-                        photo.isClicked = false;
-                    }
-                });
             }
         }
 
@@ -169,15 +168,46 @@
             }
         }
 
+        function toggleFullscreen(plane) {
+            if (!plane.isFullScreen) {
+                var fullscreenPlane = plane.clone();
+                fullscreenPlane.scale.set(4, 3, 1);
+                fullscreenPlane.position.set(0, plane.position.y, -1);
+
+                // Disable depth testing for the fullscreen plane
+                fullscreenPlane.material.depthTest = false;
+                fullscreenPlane.renderOrder = Number.MAX_SAFE_INTEGER; // Ensure it's rendered last
+
+                scene.add(fullscreenPlane);
+                plane.isFullScreen = true;
+            } else {
+                scene.remove(scene.children[scene.children.length - 1]);
+                plane.isFullScreen = false;
+            }
+        }
+
 
         // Listen for mouse move events
         document.addEventListener('mousemove', onMouseMove, false);
+        
+        // Listen for click events
+        document.addEventListener('click', function(event) {
+            // Update raycaster with mouse position
+            raycaster.setFromCamera(mouseVector, camera);
+
+            // Check for intersections with the planes
+            var intersects = raycaster.intersectObjects(scene.children, true);
+
+            // If intersection found, toggle fullscreen
+            if (intersects.length > 0) {
+                toggleFullscreen(intersects[0].object);
+            }
+        }, false);
 
         // Render the scene
         function animate() {
             requestAnimationFrame(animate);
 
-            
             // Update camera position
             updateCameraPosition();
 
