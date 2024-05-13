@@ -15,10 +15,21 @@
 			overflow: hidden;
 		}
 	</style>
-
 </head>
 
 <body>
+
+    <video
+        id = "video"
+        playsinline
+        autoplay
+        loop
+        width="16"
+        height="9"
+        style="display:none"
+        src = "assets/video.mp4"
+    >
+    </video>
 
 	<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
 
@@ -78,12 +89,20 @@
             ceiling.position.y = roomHeight / 2;
             scene.add(ceiling);
 
+            //add video
+            // Create video element from assets
+            let video = document.getElementById('video');
+            let videoTexture = new THREE.VideoTexture(video);
+
+            videoTexture.minFilter = THREE.LinearFilter;
+            videoTexture.magFilter = THREE.LinearFilter;            
+
             //add a poster to the wall 16:9 centered between the left wall and the back wall
             var posterWidth = 4.8;
             var posterHeight = 2.7;
 
-            var posterMaterial = new THREE.MeshBasicMaterial({ color: 0x95878e });
-            var posterGeometry = new THREE.BoxGeometry(posterWidth, posterHeight, 0.1);
+            var posterMaterial = new THREE.MeshBasicMaterial({ map: videoTexture, side: THREE.FrontSide, toneMapped: false});
+            var posterGeometry = new THREE.PlaneGeometry(posterWidth, posterHeight);
 
             var poster = new THREE.Mesh(posterGeometry, posterMaterial);
             poster.position.x = -roomWidth/128;
@@ -92,27 +111,25 @@
 
             //add red boxes to the room
             // Define the number of rows and columns for the seating arrangement
-            var numRows = 4; // Number of rows
+            var numRows = 5; // Number of rows
             var numCols = 7; // Number of columns
 
             // Define spacing between rows and columns
             var rowSpacing = 1; // Spacing between rows
             var colSpacing = 1; // Spacing between columns
 
-            // Create boxes
-            var boxMaterial = new THREE.MeshBasicMaterial({ color: 0x800020  }); // Red color
-            var boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5); 
-            var box = new THREE.Mesh(boxGeometry, boxMaterial);
+            var boxMaterial = new THREE.MeshBasicMaterial({ color: 0x800020  });
+            var archMaterial = new THREE.MeshBasicMaterial({ color: 0x800020  }); 
 
-            //create an arch for the box to make a chair
-            var archMaterial = new THREE.MeshBasicMaterial({ color: 0x800020  }); // Red color
-            var archGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.5, 32);
-            var arch = new THREE.Mesh(archGeometry, archMaterial);
-
-            //group box to make a chair
+            // Create an arch for the backrest of the chair
+            var backrestGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.5, 8);
+            var backrest = new THREE.Mesh(backrestGeometry, archMaterial);
+            backrest.position.z = 0; // Position the backrest behind the seat
+            
+            // Group the seat and backrest to make a chair
             var group = new THREE.Group();
-            group.add(box);
-            group.add(arch);
+            group.add(backrest);
+
 
             //loop to create and position the chairs
             for (var i = 0; i < numRows; i++) {
@@ -125,12 +142,9 @@
                 }
             }
 
-
-
-
-
             // Set camera position
             camera.position.z = 5;
+            camera.lookAt(scene.position);
 
             // Add lighting
             var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -143,9 +157,40 @@
             // Render the scene
             function animate() {
                 requestAnimationFrame(animate);
+                videoTexture.needsUpdate = true;
                 renderer.render(scene, camera);
             }
             animate();
+
+            document.addEventListener('keydown', function(e) {
+                // Check key codes for play, pause, restart, mute/unmute, and spacebar toggle
+                if (e.keyCode === 80) { // 'P' key for play
+                    if (video) {
+                        video.play();
+                    }
+                } else if (e.keyCode === 83) { // 'S' key for pause
+                    if (video) {
+                        video.pause();
+                    }
+                } else if (e.keyCode === 82) { // 'R' key for restart (go to beginning)
+                    if (video) {
+                        video.currentTime = 0;
+                    }
+                } else if (e.keyCode === 77) { // 'M' key for mute/unmute
+                    if (video) {
+                        video.muted = !video.muted;
+                    }
+                } else if (e.keyCode === 32) { // Spacebar for play/pause toggle
+                    if (video) {
+                        if (video.paused) {
+                            video.play();
+                        } else {
+                            video.pause();
+                        }
+                    }
+                }
+            });
+            
         }
 
         window.onload = init;
