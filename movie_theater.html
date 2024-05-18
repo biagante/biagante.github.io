@@ -14,11 +14,44 @@
 			margin: 0px;
 			overflow: hidden;
 		}
+        .back-arrow {
+            position: absolute; /* Position the back arrow */
+            top: 60px;
+            left: 40px;
+            cursor: pointer;
+            z-index: 1000; /* Ensure it's above other elements */
+            color: lightgray; /* Light gray color */
+            font-size: 24px; /* Adjust font size */
+            font-weight: bold; /* Make it thicker */
+            font-family: Helvetica, Arial, sans-serif; /* Use the same font as in the scene */
+            text-shadow: -1px -1px 0 #000,  
+                          1px -1px 0 #000,
+                         -1px  1px 0 #000,
+                          1px  1px 0 #000;
+        }
+        .back-arrow:hover {
+            color: gray; /* Darker color on hover */
+        }
+        .instructions {
+            position: absolute;
+            top: 120px;
+            left: 40px;
+            color: lightgray;
+            font-size: 16px;
+            font-family: Helvetica, Arial, sans-serif;
+            /* Add text outline */
+            text-shadow: -1px -1px 0 #000,  
+                          1px -1px 0 #000,
+                         -1px  1px 0 #000,
+                          1px  1px 0 #000;
+        }
 	</style>
 </head>
 
 <body>
 
+    <div class="back-arrow" id="backArrow">&larr; go back</div> <!-- Back arrow -->
+    <instructions class="instructions">Press 'P' to play,<br> 'S' to pause,<br> 'R' to restart,<br> 'M' to mute/unmute,<br> and spacebar to toggle play/pause</instructions>
     <video
         id = "video"
         playsinline
@@ -194,6 +227,11 @@
         }
 
         window.onload = init;
+
+        document.getElementById('backArrow').addEventListener('click', function() {
+            // Perform the action when the back arrow is clicked, such as navigating back
+            window.history.back();
+        });
 
 	</script>
 

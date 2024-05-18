@@ -18,11 +18,26 @@
             align-items: center;
             height: 100vh;
         }
+        .back-arrow {
+            position: absolute; /* Position the back arrow */
+            top: 20px;
+            left: 40px;
+            cursor: pointer;
+            z-index: 1000; /* Ensure it's above other elements */
+            color: lightgray; /* Light gray color */
+            font-size: 24px; /* Adjust font size */
+            font-weight: bold; /* Make it thicker */
+            font-family: Helvetica, Arial, sans-serif; /* Use the same font as in the scene */
+        }
+        .back-arrow:hover {
+            color: gray; /* Darker color on hover */
+        }
     </style>
 </head>
 <body>
     <div class="gallery-container">
         <div id="gallery"></div> <!-- Container for the gallery -->
+        <div class="back-arrow" id="backArrow">&larr; go back</div> <!-- Back arrow -->
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -744,6 +759,11 @@
             renderer.render(scene, camera);
         }
         animate();
+
+        document.getElementById('backArrow').addEventListener('click', function() {
+            // Perform the action when the back arrow is clicked, such as navigating back
+            window.history.back();
+        });
 
     </script>
 </body>
